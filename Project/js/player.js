@@ -60,12 +60,41 @@ function Player(x, y) {
 				y: this.y,
 				width: this.width,
 				height: this.height
+			}
 			
 			//vert collision
 			
+			let verticalRect = {
+            x:this.x,
+			y: this.y + this.yspeed,
+			width: this.width,
+			height: this.height
+			}
 			
-            this.x += this.xspeed;
-            this.y += this.yspeed;
+			//check for intersections
+			for (let i = 0; i < borders.length; i++) {
+			   let	borderRect = {
+				   x: borders[i].x,
+				   y: borders[i].y,
+				   width: borders[i].width,
+				   height: borders[i].height,
+			   }
+			   if(checkIntersection(horizontalRect, borderRect)){
+				   while(checkIntersection(horizontalRect, borderRect)){
+					   horizontalRect.x -= Math.sign(this.xspeed);
+			   }
+			   this.x = horizontalRect.x
+			  this.xspeed = 0
+			   }
+			      if(checkIntersection(verticalRect, borderRect)){
+				   while(checkIntersection(verticalRect, borderRect)){
+					   verticalRect.y -= Math.sign(this.yspeed);
+			   }
+			   this.y = verticalRect.y
+			  this.yspeed = 0
+			   }		
+			   
+			}
         }
     };
 
