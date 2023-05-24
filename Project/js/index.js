@@ -1,6 +1,4 @@
 
-
-
 var canvas
 var ctx
 
@@ -21,7 +19,7 @@ window.onload = function() {
 	//setup key listeners
 	setupInputs()
 	//create the player
-	player = new Player(100,400)
+	player = new Player(300,200)
 	
 	//create map
 	for (let i = 0; i < 6; i++) {
