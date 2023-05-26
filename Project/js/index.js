@@ -11,6 +11,8 @@ var leftKey
 var gameLoop
 var player
 var borders = []
+
+const BLOCKSIZE = 150
 //once the page has loaded
 window.onload = function() {
 	canvas = document.getElementById("myCanvas")
@@ -22,13 +24,11 @@ window.onload = function() {
 	player = new Player(300,200)
 	
 	//create map
-	for (let i = 0; i < 6; i++) {
-		borders.push(new Border(0 + 100* i, 620, 100, 100, 1))
-	}
-	borders.push(new Border(0, 520, 100, 100, 2))
-	for (let i = 0; i < 3; i++){
-		borders.push(new Border(600, 420 + 100*i, 100, 100, 2))
-	}
+	
+	borders.push(new Border(0, 620, 600, BLOCKSIZE, 1))
+	borders.push(new Border(0, 470, BLOCKSIZE, BLOCKSIZE, 2))
+	borders.push(new Border(600, 420, BLOCKSIZE, BLOCKSIZE, 2))
+	borders.push(new Border(900, 420, BLOCKSIZE, BLOCKSIZE, 2))
 	
 	gameLoop = setInterval(step, 1000/30)
 	
@@ -36,7 +36,7 @@ window.onload = function() {
 }
 
 function step(){
-	// console.log("step")
+	
 	player.step()
 	
 	draw()
@@ -57,8 +57,10 @@ function setupInputs(){
 	document.addEventListener("keydown", function(event) {
 		if (event.key === "w"){
 			upKey = true;
+			
 		} else if (event.key ==="a") {
 			leftKey = true;
+			
 		} else if (event.key ==="s") {
 			downKey = true;
 		}
