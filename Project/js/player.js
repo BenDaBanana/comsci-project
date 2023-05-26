@@ -1,11 +1,15 @@
 function Player(x, y) {
     // player variables
+	var jumpHeight = 40
+	var isGrounded = false
+	var canDoubleJump = true
     this.x = x;
     this.y = y;
     this.xspeed = 0;
     this.yspeed = 0;
-    this.friction = 0.6;
-    this.maxSpeed = 10;
+    this.friction = 0.4;
+    this.maxSpeed = 15;
+	this.yMaxspeed = 20
     this.width = 50;
     this.height = 100;
     this.active = true; // Add the 'active' property and set it to true
@@ -18,15 +22,25 @@ function Player(x, y) {
                 // slow down
                 this.xspeed *= this.friction;
             } else if (rightKey) {
-                this.xspeed++;
+                this.xspeed = this.xspeed + 3
+				
             } else if (leftKey) {
-                this.xspeed--;
+                this.xspeed = this.xspeed - 3
             }
             // vertical movement
 			if (upKey) {
+				console.log(upKey)
 				//check player grounded
 				
-				this.yspeed = -15
+				if(isGrounded == true){
+				    this.yspeed = -jumpHeight
+				    isGrounded = false
+					upKey = false
+				}else if(canDoubleJump == true){
+					this.yspeed = -jumpHeight
+				    canDoubleJump = false
+				}
+			
 				
 				
 			}
@@ -39,11 +53,13 @@ function Player(x, y) {
 			}else if (this.xspeed < -this.maxSpeed) {
 				this.xspeed = -this.maxSpeed
 			}
-				if (this.yspeed >this.maxSpeed) {
-				this.yspeed = this.maxSpeed
-			}else if (this.yspeed < -this.maxSpeed) {
-				this.yspeed = -this.maxSpeed
+				if (this.yspeed >this.yMaxSpeed) {
+				this.yspeed = this.yMaxSpeed
+			}else if (this.yspeed < -this.yMaxSpeed) {
+				this.yspeed = -this.yMaxSpeed
 			}
+			
+			
 			if(this.xspeed > 0) {
 				this.xspeed = Math.floor(this.xspeed)
 			}else {
@@ -54,18 +70,19 @@ function Player(x, y) {
 			}else {
 				this.yspeed = Math.ceil(this.yspeed)
 			}
-			//hori collision
+			//horizontal collision
 			let horizontalRect = {
+				
 				x: this.x + this.xspeed,
 				y: this.y,
 				width: this.width,
 				height: this.height
 			}
 			
-			//vert collision
+			//vertiacal collision
 			
 			let verticalRect = {
-            x:this.x,
+            x: this.x,
 			y: this.y + this.yspeed,
 			width: this.width,
 			height: this.height
@@ -77,28 +94,36 @@ function Player(x, y) {
 				   x: borders[i].x,
 				   y: borders[i].y,
 				   width: borders[i].width,
-				   height: borders[i].height,
+				   height: borders[i].height
 			   }
 			   if(checkIntersection(horizontalRect, borderRect)){
 				   while(checkIntersection(horizontalRect, borderRect)){
-					   horizontalRect.x -= Math.sign(this.xspeed);
-			   }
+					   horizontalRect.x -= Math.sign(this.xspeed);	   
+				   }
+			     
 			   this.x = horizontalRect.x
-			  this.xspeed = 0
+			   this.xspeed = 0
 			   }
 			      if(checkIntersection(verticalRect, borderRect)){
 				   while(checkIntersection(verticalRect, borderRect)){
 					   verticalRect.y -= Math.sign(this.yspeed);
 			   }
 			   this.y = verticalRect.y
-			  this.yspeed = 0
+			   isGrounded = true
+			   canDoubleJump = true
+			   this.yspeed = 0
+			 
+			  
 			   }		
 			   
 			}
+			this.x +=this.xspeed
+			this.y += this.yspeed
         }
     };
 
     this.draw = function() {
+		
         ctx.fillStyle = "green";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     };
