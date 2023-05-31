@@ -1,4 +1,5 @@
 
+
 var canvas
 var ctx
 
@@ -12,7 +13,10 @@ var gameLoop
 var player
 var borders = []
 
-const BLOCKSIZE = 150
+const PLATFORMHEIGHT = 50
+const PLATFORMWIDTH = 150
+const BLOCKHEIGHT = 150
+const BLOCKWIDTH = 600
 //once the page has loaded
 window.onload = function() {
 	canvas = document.getElementById("myCanvas")
@@ -25,10 +29,21 @@ window.onload = function() {
 	
 	//create map
 	
-	borders.push(new Border(0, 620, 600, BLOCKSIZE, 1))
-	borders.push(new Border(0, 470, BLOCKSIZE, BLOCKSIZE, 2))
-	borders.push(new Border(600, 420, BLOCKSIZE, BLOCKSIZE, 2))
-	borders.push(new Border(900, 420, BLOCKSIZE, BLOCKSIZE, 2))
+	//Ground level blocks
+	borders.push(new Border(0, 620, BLOCKWIDTH, BLOCKHEIGHT, 1))
+	borders.push(new Border(600, 620, BLOCKWIDTH, BLOCKHEIGHT, 1))
+	borders.push(new Border(1200, 620, BLOCKWIDTH, BLOCKHEIGHT, 1))
+	//walls
+	borders.push(new Border(1000, 100, BLOCKHEIGHT, BLOCKWIDTH, 1))
+	//platforms
+	borders.push(new Border(800, 470, PLATFORMWIDTH, PLATFORMHEIGHT, 2))
+	borders.push(new Border(500, 320, PLATFORMWIDTH, PLATFORMHEIGHT, 2))
+	borders.push(new Border(800, 170, PLATFORMWIDTH, PLATFORMHEIGHT, 2))
+	borders.push(new Border(1200, 320, PLATFORMWIDTH, PLATFORMHEIGHT, 2))
+	//powerups
+	borders.push(new Border(1500, 500, 50, 50, 3))
+	
+
 	
 	gameLoop = setInterval(step, 1000/30)
 	
@@ -83,6 +98,7 @@ function setupInputs(){
 }
 
 function checkIntersection(r1, r2) {
+	if (r2.type != 3){
 	if (r1.x >= r2.x + r2.width){
 		return false
 	} else if (r1.x + r1.width <= r2.x){
@@ -93,5 +109,6 @@ function checkIntersection(r1, r2) {
 		return false
 	} else{
 		return true
+	}
 	}
 }
