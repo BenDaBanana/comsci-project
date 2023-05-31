@@ -1,8 +1,11 @@
 function Player(x, y) {
     // player variables
-	var jumpHeight = 40
+	var jumpHeight = 45
+	var doubleJumpHeight = 40
 	var isGrounded = false
 	var canDoubleJump = true
+	var hasDoubleJump = true
+	
     this.x = x;
     this.y = y;
     this.xspeed = 0;
@@ -36,9 +39,11 @@ function Player(x, y) {
 				    this.yspeed = -jumpHeight
 				    isGrounded = false
 					upKey = false
-				}else if(canDoubleJump == true){
-					this.yspeed = -jumpHeight
+				}else if(hasDoubleJump == true){
+					if(canDoubleJump == true){
+					this.yspeed = -doubleJumpHeight
 				    canDoubleJump = false
+					}
 				}
 			
 				
@@ -95,7 +100,10 @@ function Player(x, y) {
 				   y: borders[i].y,
 				   width: borders[i].width,
 				   height: borders[i].height
+				   type: borders[i].type
+				   
 			   }
+			   
 			   if(checkIntersection(horizontalRect, borderRect)){
 				   while(checkIntersection(horizontalRect, borderRect)){
 					   horizontalRect.x -= Math.sign(this.xspeed);	   
@@ -114,10 +122,11 @@ function Player(x, y) {
 			   this.yspeed = 0
 			 
 			  
-			   }		
+			   }
+			   			   
 			   
 			}
-			this.x +=this.xspeed
+			obstacleMover = this.xspeed
 			this.y += this.yspeed
         }
     };
