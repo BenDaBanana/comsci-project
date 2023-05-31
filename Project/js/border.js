@@ -1,3 +1,4 @@
+var obstacleMover = 0
 function Border (x, y, width, height, type){
 	this.x = x
 	this.y = y
@@ -10,7 +11,10 @@ function Border (x, y, width, height, type){
 			ctx.fillStyle = "blue"
 		} else if (this.type === 2) {
 			ctx.fillStyle = "red"
+		} else if (this.type === 3){
+			ctx.fillStyle = "orange"
 		}
+		this.x -= obstacleMover
 		ctx.fillRect(this.x, this.y, this.width, this.height)
 	}
 }
