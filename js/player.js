@@ -1,13 +1,21 @@
+//ben graham
+//Purpose: run a platformer game
+//Date:21/07/23
+//version: 13
+
+
 var jumpHeight = 45;
 var doubleJumpHeight = 40;
 var isGrounded = false;
 var canDoubleJump = true;
 var hasDoubleJump = false;
 var hasKey = false
+var collisionCheck = 0
 var skellyRightImage = new Image()
 skellyRightImage.src = "images/SkellyRight.png"
 var skellyLeftImage = new Image()
 skellyLeftImage.src = "images/skellyLeft.png"
+
 class Player {
 	constructor(x, y) {
 		this.x = x;
@@ -113,6 +121,7 @@ class Player {
 					}
 					this.x = horizontalRect.x;
 					this.xspeed = 0;
+					
 				}
 
 				if (checkIntersection(verticalRect, borders[i])) {
@@ -125,6 +134,13 @@ class Player {
 					
 					canDoubleJump = true;
 					this.yspeed = 0;
+					collisionCheck += 1
+					console.log(collisionCheck)
+					if(collisionCheck >= 5){
+						this.y += this.yMaxspeed
+					}
+				}else{
+					collisionCheck = 0
 				}
 			}
 			//obstactleMover applies the x speed of the player to the borders, instead of the player, creating a scrolling effect.
